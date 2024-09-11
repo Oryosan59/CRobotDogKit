@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include "PWMServoDriver.h"
 
-#define NUM_CHANNELS 13 //(2~14)
+#define NUM_CHANNELS 14 //(2~14,16)
 
 int main() {
     // I2Cアドレスはデフォルトで0x40とする
@@ -19,11 +19,11 @@ int main() {
     // 周波数を50Hzに設定 (サーボ用)
     PWMServoDriver_setPWMFreq(driver, 50.0);
 
-    uint8_t channels[NUM_CHANNELS] = {2,3,4,5,6,7,8,9,10,11,12,13,14};
+    uint8_t channels[NUM_CHANNELS] = {2,3,4,5,6,7,8,9,10,11,12,13,14,16};
 
     // 各チャンネルにPWM出力を1500マイクロ秒（サーボの中立位置に相当）に設定
     for(int i = 0; i < NUM_CHANNELS; i++){
-        PWMServoDriver_writeMicroseconds(driver, channels[i], 1587);
+        PWMServoDriver_writeMicroseconds(driver, channels[i], 1500);
         printf("PWM set to 1500 microseconds on channel %d/n", channels[i]);
     }
     
