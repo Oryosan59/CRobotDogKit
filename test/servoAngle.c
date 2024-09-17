@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <unistd.h>
 #include "PWMServoDriver.h"
 
 #define PULSE_WIDTH_CENTER 1500
@@ -21,7 +22,7 @@ int main()
     // 周波数を50Hzに設定 (サーボ用)
     PWMServoDriver_setPWMFreq(driver, 50.0);
 
-    // 軸4,7,8,11を90度回転させる
+    // 軸4,7,8,11を45度回転させる
     for(int i = 0; i < 300; i++)
     {
         PWMServoDriver_writeMicroseconds(driver, 4, PULSE_WIDTH_CENTER - i);
@@ -31,7 +32,7 @@ int main()
         usleep(10000); 
     }
 
-    // 軸2,5,10,13を90度回転させる
+    // 軸2,5,10,13を45度回転させる
     for(int i = 0; i < 300; i++)
     {
         PWMServoDriver_writeMicroseconds(driver, 2, PULSE_WIDTH_CENTER - i);
@@ -41,7 +42,7 @@ int main()
         usleep(10000); 
     }
 
-    // 軸3,6,9,12を60度回転させる
+    // 軸3,6,9,12を30度回転させる
     for(int i = 0; i < 200; i++)
     {
         PWMServoDriver_writeMicroseconds(driver, 3, PULSE_WIDTH_CENTER - i);

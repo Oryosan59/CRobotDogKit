@@ -27,35 +27,33 @@ volatile unsigned int *gpio_addr;
 int setup_io()
 {
     int mem_fd = open("/dev/mem" , O_RDWR | O_SYNC);
-    if (men_fd < 0)
+    if (mem_fd < 0)
     {
         perror("Failed to open /dev/mem");
         return -1;
     }
 
-    gpio_addr = (unsigned int*)mmap
-    (
-        NULL;
-        BLOCK_SIZE,
-        PROT_READ | PROT_WRITE,
-        MAP_SHARED,
-        mem_fd
-        GPIO_BASE
+    gpio_addr = (unsigned int*)mmap(
+        NULL,                    // 任意のアドレス
+        BLOCK_SIZE,              // 4KBメモリマッピング
+        PROT_READ | PROT_WRITE,  // 読み書きの権限
+        MAP_SHARED,              // 他のプロセスとメモリ共有
+        mem_fd,                  // メモリファイルディスクリプタ
+        GPIO_BASE                // GPIOの物理アドレス
     );
 
     close(mem_fd);
 
-    if (gpio == MAP_FAILED)
+    if (gpio_addr == MAP_FAILED)  // 修正: gpioではなくgpio_addrを使う
     {
         perror("Failed to mmap GPIO");
         return -1;
     }
     return 0;
-    
 }
 
 // GPIOの出力設定
-void set_gpio_ouotput(int pin)
+void set_gpio_output(int pin)
 {
     int reg = pin / 10;
     int shift = (pin % 10) * 3;

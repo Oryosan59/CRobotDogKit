@@ -31,6 +31,13 @@
 int16_t read_word_2c(int fd, uint8_t reg) 
 {
     uint8_t buf[2];
+    
+    // デバイスアドレスの再設定
+    if (ioctl(fd, I2C_SLAVE, MPU6050_ADDR) < 0) {
+        perror("Failed to set I2C address");
+        return 0;
+    }
+
     if (write(fd, &reg, 1) != 1) {
         perror("Failed to write register address");
         return 0;
@@ -46,6 +53,13 @@ int16_t read_word_2c(int fd, uint8_t reg)
 uint8_t read_byte(int fd, uint8_t reg) 
 {
     uint8_t value;
+    
+    // デバイスアドレスの再設定
+    if (ioctl(fd, I2C_SLAVE, MPU6050_ADDR) < 0) {
+        perror("Failed to set I2C address");
+        return 0;
+    }
+
     if (write(fd, &reg, 1) != 1) {
         perror("Failed to write register address");
         return 0;
@@ -63,6 +77,13 @@ void write_byte(int fd, uint8_t reg, uint8_t value)
     uint8_t buf[2];
     buf[0] = reg;
     buf[1] = value;
+
+    // デバイスアドレスの再設定
+    if (ioctl(fd, I2C_SLAVE, MPU6050_ADDR) < 0) {
+        perror("Failed to set I2C address");
+        return;
+    }
+
     if (write(fd, buf, 2) != 2) {
         perror("I2C write failed");
     }
@@ -138,10 +159,10 @@ int main()
     while (1)
     {
         // 加速度,ジャイロ,温度データの取得
-        get_sensor_data(fd, &ax, &ay, &az, &gx, &gy, &gz &temp);
+        get_sensor_data(fd, &ax, &ay, &az, &gx, &gy, &gz, &temp);
         
         // ピッチとロールの計算
-        calculate_pitch_roll(ax, ay, az, &pitch, &roll)
+        calculate_pitch_roll(ax, ay, az, &pitch, &roll);
 
         // センサーデータの表示
         printf("Accel: ax=%.2f, ay=%.2f, az=%.2f\n", ax, ay, az);

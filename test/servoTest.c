@@ -27,7 +27,7 @@ int main()
     for(int i = 0; i < NUM_CHANNELS; i++)
     {
         PWMServoDriver_writeMicroseconds(driver, channels[i], 1500);
-        printf("PWM set to 1500 microseconds on channel %d/n", channels[i]);
+        printf("PWM set to 1500 microseconds on channel %d\n", channels[i]);
     }
     
     // 使用後は解放
